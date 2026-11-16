@@ -1,4 +1,4 @@
-// Xor
+// Xor: out = (a AND NOT b) OR (NOT a AND b)
 CHIP Xor {
     IN a, b;
     OUT out;

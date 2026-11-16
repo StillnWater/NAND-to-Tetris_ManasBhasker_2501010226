@@ -1,0 +1,10 @@
+// 4-way DMux: routes in to a/b/c/d according to sel[2]
+CHIP DMux4Way {
+    IN in, sel[2];
+    OUT a, b, c, d;
+
+    PARTS:
+    DMux(in=in, sel=sel[1], a=ac, b=bd);
+    DMux(in=ac, sel=sel[0], a=a, b=b);
+    DMux(in=bd, sel=sel[0], a=c, b=d);
+}

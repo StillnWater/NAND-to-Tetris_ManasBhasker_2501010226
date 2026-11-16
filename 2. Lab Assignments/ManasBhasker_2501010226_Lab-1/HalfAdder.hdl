@@ -1,4 +1,4 @@
-// HalfAdder
+// Half Adder: sum = a XOR b, carry = a AND b
 CHIP HalfAdder {
     IN a, b;
     OUT sum, carry;

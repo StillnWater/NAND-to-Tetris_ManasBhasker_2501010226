@@ -1,4 +1,4 @@
-// FullAdder
+// Full Adder: sum = a+b+c (mod 2), carry = carry out
 CHIP FullAdder {
     IN a, b, c;
     OUT sum, carry;
