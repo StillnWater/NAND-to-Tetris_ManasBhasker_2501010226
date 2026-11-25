@@ -1,0 +1,40 @@
+// CPU.hdl - Hack CPU (K=26 capstone)
+CHIP CPU {
+    IN  inM[16], instruction[16], reset;
+    OUT outM[16], writeM, addressM[15], pc[15];
+
+    PARTS:
+    // A-instruction if bit15 = 0
+    Not(in=instruction[15], out=isA);
+    Mux16(a=instruction, b=aluOut, sel=instruction[15], out=aIn);
+    Or(a=isA, b=instruction[5], out=loadA);
+    ARegister(in=aIn, load=loadA, out=aReg, out[0..14]=addressM);
+
+    // D register
+    And(a=instruction[15], b=instruction[4], out=loadD);
+    DRegister(in=aluOut, load=loadD, out=dReg);
+
+    // ALU: y = A or M (a-bit = instruction[12])
+    Mux16(a=aReg, b=inM, sel=instruction[12], out=aOrM);
+    ALU(x=dReg, y=aOrM,
+        zx=instruction[11], nx=instruction[10],
+        zy=instruction[9],  ny=instruction[8],
+        f=instruction[7],   no=instruction[6],
+        out=aluOut, out=outM, zr=zr, ng=ng);
+
+    // writeM
+    And(a=instruction[15], b=instruction[3], out=writeM);
+
+    // Jump logic: j1=<0, j2=0, j3=>0
+    Not(in=zr, out=notZr);
+    Not(in=ng, out=notNg);
+    And(a=notZr, b=notNg, out=pos);
+    And(a=instruction[2], b=ng,  out=jlt);
+    And(a=instruction[1], b=zr,  out=jeq);
+    And(a=instruction[0], b=pos, out=jgt);
+    Or(a=jlt, b=jeq, out=jle);
+    Or(a=jle, b=jgt, out=jumpCond);
+    And(a=jumpCond, b=instruction[15], out=doJump);
+
+    PC(in=aReg, load=doJump, inc=true, reset=reset, out[0..14]=pc);
+}
