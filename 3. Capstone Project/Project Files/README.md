@@ -14,13 +14,6 @@
 | `tests/test_all.py` | Python self-checks (assembler + Box simulation) |
 | `report/` | Report draft |
 
-## Still to do by hand
-1. Copy Pong.asm (and the official Add/Max/Rect .hack files) from the course
-   download into `asm/`, run my assembler, and `diff` against the official output.
-2. Run CPU.tst, Memory.tst, ComputerAdd/Max/Rect.tst in the Hardware Simulator
-   and take the screenshots. (If a lab chip fails, use the built-in and say so.)
-3. Load Box.hack in the CPU Emulator, set keyboard on, screenshot the box.
-4. Drop screenshots into the report, fill in name, and push `capstone/` to GitHub.
 
 ## Usage
     python assembler.py Box.asm Box.hack
